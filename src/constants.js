@@ -29,6 +29,10 @@ import typescriptLogo from './assets/tech_logo/typescript.png';
 import vercelLogo from './assets/tech_logo/vercel.png';
 import vscodeLogo from './assets/tech_logo/vscode.png';
 
+
+// Experience Section Logo's
+import wiproLogo from './assets/company_logo/wipro_logo.png';
+
 export const SkillsInfo = [
   {
     title: 'Frontend',
@@ -78,6 +82,41 @@ export const SkillsInfo = [
       { name: 'Vercel', logo: vercelLogo },
       { name: 'Netlify', logo: netlifyLogo },
       { name: 'Figma', logo: figmaLogo },
+    ],
+  },
+];
+
+
+export const experiences = [
+  {
+    id: 0,
+    img: wiproLogo,
+    role: "Fullstack Developer",
+    company: "Wipro Technologies",
+    date: "Dec 2021 - Present",
+    desc: "Developed dynamic and scalable web applications using the MERN stack, handling both frontend and backend development. Collaborated with cross-functional teams to build responsive UI, implement RESTful APIs, and optimize application performance in an agile environment.",
+    skills: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React JS",
+      "TypeScript",
+      "Node JS",
+      "Tailwind CSS",
+      "MongoDb",
+      "Redux",
+      "Next Js",
+      "AWS",
+      "JIRA",
+      "Bitbucket",
+      "Jenkins",
+      "PostgreSQL",
+      "Express JS",
+      "Git",
+      "GitHub",
+      "Figma",
+      "Postman",
+      "Material UI",
     ],
   },
 ];

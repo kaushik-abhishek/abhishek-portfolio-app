@@ -4,6 +4,7 @@ import Footer from "./component/Footer/Footer";
 import About from "./component/About/About";
 import BlurBlob from "./component/BlurBlob";
 import Skills from "./component/Skills/Skills";
+import Experience from "./component/Experience/Experience";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Navbar />
         <About />
         <Skills />
+        <Experience />
         <Footer />
       </div>
     </div>
