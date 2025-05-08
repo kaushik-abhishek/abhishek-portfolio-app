@@ -33,6 +33,11 @@ import vscodeLogo from './assets/tech_logo/vscode.png';
 // Experience Section Logo's
 import wiproLogo from './assets/company_logo/wipro_logo.png';
 
+// Education Section Logo's
+import jmietiLogo from './assets/education_logo/jmietiLogo.png';
+import mlnLogo from './assets/education_logo/mlnLogo.png';
+import avmLogo from './assets/education_logo/avmLogo.png';
+
 export const SkillsInfo = [
   {
     title: 'Frontend',
@@ -120,3 +125,34 @@ export const experiences = [
     ],
   },
 ];
+
+
+  export const education = [
+    {
+      id: 0,
+      img: jmietiLogo,
+      school: "Jai Prakash Mukand Lal Innvoative Engineering & Technology Institue, Yamunanagar",
+      date: "Aug 2017 - July 2021",
+      grade: "70%",
+      desc: "I completed my Bachelor's degree in Computer Science (B.Tech.) from JMIETI, Yamunanagar (HR). Throughout my studies, I was immersed in a variety of subjects that deepened my understanding of computing and technology. From exploring Data Structures and Algorithms to diving into Web Development and Database Management Systems, I gained practical insights into the world of software development. My time at BSA College allowed me to work on projects that applied theoretical concepts to real-world problems.",
+      degree: "Bachelor of Technology - BTech (Computer Science)",
+    },
+    {
+      id: 1,
+      img: mlnLogo,
+      school: "Mukand Lal National Senior Secondary School",
+      date: "Apr 2015 - March 2017",
+      grade: "79%",
+      desc: "I completed my class 12 education from Mukand Lal National Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Physics, Chemistry, and Mathematics (PCM) with Computer Science.",
+      degree: "HBSE(XII) - PCM with Computer Science",
+    },
+    {
+      id: 2,
+      img: avmLogo,
+      school: "Adarsh Vidya Mandir Senior Secondary School",
+      date: "Apr 2004 - March 2015",
+      grade: "88.4%",
+      desc: "I completed my class 10 education from Adarsh Vidya Mandir Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Science, Math with Computer.",
+      degree: "HBSE(X), Science, Math with Computer Application",
+    },
+  ];

@@ -33,7 +33,7 @@ const Footer = () => {
     },
     {
       icon: <FaYoutube />,
-      link: "https://www.youtube.com/kaushik.abhishek",
+      link: "https://www.youtube.com/@kaushik.abhishek",
     },
   ];
 
