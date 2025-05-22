@@ -150,7 +150,7 @@ export const experiences = [
       id: 2,
       img: avmLogo,
       school: "Adarsh Vidya Mandir Senior Secondary School",
-      date: "Apr 2004 - March 2015",
+      date: "Apr 2014 - March 2015",
       grade: "88.4%",
       desc: "I completed my class 10 education from Adarsh Vidya Mandir Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Science, Math with Computer.",
       degree: "HBSE(X), Science, Math with Computer Application",
