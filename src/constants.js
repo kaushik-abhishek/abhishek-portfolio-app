@@ -32,9 +32,10 @@ import vscodeLogo from './assets/tech_logo/vscode.png';
 
 // Experience Section Logo's
 import wiproLogo from './assets/company_logo/wipro_logo.png';
+import oatiLogo from './assets/company_logo/oati_logo.jpeg';
 
 // Education Section Logo's
-import jmietiLogo from './assets/education_logo/jmietiLogo.png';
+import jmietiLogo from './assets/education_logo/jmieti_logo.jpeg';
 import mlnLogo from './assets/education_logo/mlnLogo.png';
 import avmLogo from './assets/education_logo/avmLogo.png';
 
@@ -122,6 +123,24 @@ export const experiences = [
       "Figma",
       "Postman",
       "Material UI",
+    ],
+  },
+  {
+    id: 0,
+    img: oatiLogo,
+    role: "Associate Software Developer",
+    company: "Open Access Technology Inc.",
+    date: "Jun 2021 - Dec 2021",
+    desc: "Engineered robust full-stack web solutions using JavaScript technologies, seamlessly integrating frontend interfaces with backend services. Spearheaded the development of responsive user experiences, crafted efficient RESTful APIs, and enhanced performance through code optimization and agile collaboration with cross-functional teams.",
+    skills: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Sencha Ext JS",
+      "Asp.Net",
+      "Microsoft Sql Server",
+      "Git",
+      "GitHub",
     ],
   },
 ];

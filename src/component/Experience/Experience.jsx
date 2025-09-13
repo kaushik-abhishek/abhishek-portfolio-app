@@ -40,7 +40,7 @@ const Experience = () => {
               {/* Flex Container for Image and Text */}
               <div className="flex items-center space-x-6">
                 {/* Company Logo */}
-                <div className="w-16 h-16 bg-white rounded-md overflow-hidden">
+                <div className="w-24 h-16 bg-white rounded-md overflow-hidden">
                   <img
                     src={experience.img}
                     alt={experience.company}
