@@ -1,6 +1,6 @@
 import Tilt from "react-parallax-tilt";
 import ReactTypingEffect from "react-typing-effect";
-import profileImage from "../../assets/profile_abhishek.jpg";
+import profileImage from "../../assets/profile-photo.jpg";
 
 const About = () => {
   return (

@@ -126,7 +126,7 @@ export const experiences = [
     ],
   },
   {
-    id: 0,
+    id: 1,
     img: oatiLogo,
     role: "Associate Software Developer",
     company: "Open Access Technology Inc.",
