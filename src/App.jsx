@@ -1,5 +1,6 @@
 import About from "./component/About/About";
 import BlurBlob from "./component/BlurBlob";
+import Chatbot from "./component/Chatbot/Chatbot";
 import Contact from "./component/Contact/Contact";
 import Education from "./component/Education/Education";
 import Experience from "./component/Experience/Experience";
@@ -32,6 +33,7 @@ const App = () => {
         <Contact />
         <Footer />
       </div>
+      <Chatbot />
     </div>
   );
 };

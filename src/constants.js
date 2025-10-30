@@ -125,24 +125,24 @@ export const experiences = [
       "Material UI",
     ],
   },
-  {
-    id: 1,
-    img: oatiLogo,
-    role: "Associate Software Developer",
-    company: "Open Access Technology Inc.",
-    date: "Jun 2021 - Dec 2021",
-    desc: "Engineered robust full-stack web solutions using JavaScript technologies, seamlessly integrating frontend interfaces with backend services. Spearheaded the development of responsive user experiences, crafted efficient RESTful APIs, and enhanced performance through code optimization and agile collaboration with cross-functional teams.",
-    skills: [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "Sencha Ext JS",
-      "Asp.Net",
-      "Microsoft Sql Server",
-      "Git",
-      "GitHub",
-    ],
-  },
+  // {
+  //   id: 1,
+  //   img: oatiLogo,
+  //   role: "Associate Software Developer",
+  //   company: "Open Access Technology Inc.",
+  //   date: "Jun 2021 - Dec 2021",
+  //   desc: "Engineered robust full-stack web solutions using JavaScript technologies, seamlessly integrating frontend interfaces with backend services. Spearheaded the development of responsive user experiences, crafted efficient RESTful APIs, and enhanced performance through code optimization and agile collaboration with cross-functional teams.",
+  //   skills: [
+  //     "HTML",
+  //     "CSS",
+  //     "JavaScript",
+  //     "Sencha Ext JS",
+  //     "Asp.Net",
+  //     "Microsoft Sql Server",
+  //     "Git",
+  //     "GitHub",
+  //   ],
+  // },
 ];
 
 
