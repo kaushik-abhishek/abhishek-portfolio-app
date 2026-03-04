@@ -31,6 +31,7 @@ import vscodeLogo from './assets/tech_logo/vscode.png';
 
 
 // Experience Section Logo's
+import indegeneLogo from './assets/company_logo/indegene_Logo.png';
 import wiproLogo from './assets/company_logo/wipro_logo.png';
 import oatiLogo from './assets/company_logo/oati_logo.jpeg';
 
@@ -96,10 +97,38 @@ export const SkillsInfo = [
 export const experiences = [
   {
     id: 0,
+    img: indegeneLogo,
+    role: "Software Developer",
+    company: "Indegene Pvt. Ltd.",
+    date: "Feb 2026 - Present",
+    desc: "Leading development of full-stack enterprise solutions using React.js, Spring Boot, and PostgreSQL, delivering high-performance REST APIs and dynamic user interfaces.",
+    skills: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React JS",
+      "TypeScript",
+      "Java",
+      "Spring Boot",
+      "Tailwind CSS",
+      "MongoDb",
+      "Redux",
+      "Next Js",
+      "AWS",
+      "JIRA",
+      "Bitbucket",
+      "CircleCI",
+      "PostgreSQL",      
+      "Git",
+      "GitHub",
+    ],
+  },
+  {
+    id: 1,
     img: wiproLogo,
-    role: "Fullstack Developer",
+    role: "Software Developer",
     company: "Wipro Technologies",
-    date: "Dec 2021 - Present",
+    date: "Dec 2021 - Feb 2026",
     desc: "Developed dynamic and scalable web applications using the MERN stack, handling both frontend and backend development. Collaborated with cross-functional teams to build responsive UI, implement RESTful APIs, and optimize application performance in an agile environment.",
     skills: [
       "HTML",
@@ -125,53 +154,53 @@ export const experiences = [
       "Material UI",
     ],
   },
-  // {
-  //   id: 1,
-  //   img: oatiLogo,
-  //   role: "Associate Software Developer",
-  //   company: "Open Access Technology Inc.",
-  //   date: "Jun 2021 - Dec 2021",
-  //   desc: "Engineered robust full-stack web solutions using JavaScript technologies, seamlessly integrating frontend interfaces with backend services. Spearheaded the development of responsive user experiences, crafted efficient RESTful APIs, and enhanced performance through code optimization and agile collaboration with cross-functional teams.",
-  //   skills: [
-  //     "HTML",
-  //     "CSS",
-  //     "JavaScript",
-  //     "Sencha Ext JS",
-  //     "Asp.Net",
-  //     "Microsoft Sql Server",
-  //     "Git",
-  //     "GitHub",
-  //   ],
-  // },
+  {
+    id: 2,
+    img: oatiLogo,
+    role: "Associate Software Developer",
+    company: "Open Access Technology Inc.",
+    date: "Jun 2021 - Dec 2021",
+    desc: "Engineered robust full-stack web solutions using JavaScript technologies, seamlessly integrating frontend interfaces with backend services. Spearheaded the development of responsive user experiences, crafted efficient RESTful APIs, and enhanced performance through code optimization and agile collaboration with cross-functional teams.",
+    skills: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Sencha Ext JS",
+      "Asp.Net",
+      "Microsoft Sql Server",
+      "Git",
+      "GitHub",
+    ],
+  },
 ];
 
 
-  export const education = [
-    {
-      id: 0,
-      img: jmietiLogo,
-      school: "Jai Prakash Mukand Lal Innvoative Engineering & Technology Institue, Yamunanagar",
-      date: "Aug 2017 - July 2021",
-      grade: "70%",
-      desc: "I completed my Bachelor's degree in Computer Science (B.Tech.) from JMIETI, Yamunanagar (HR). Throughout my studies, I was immersed in a variety of subjects that deepened my understanding of computing and technology. From exploring Data Structures and Algorithms to diving into Web Development and Database Management Systems, I gained practical insights into the world of software development. My time at BSA College allowed me to work on projects that applied theoretical concepts to real-world problems.",
-      degree: "Bachelor of Technology - BTech (Computer Science)",
-    },
-    {
-      id: 1,
-      img: mlnLogo,
-      school: "Mukand Lal National Senior Secondary School",
-      date: "Apr 2015 - March 2017",
-      grade: "79%",
-      desc: "I completed my class 12 education from Mukand Lal National Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Physics, Chemistry, and Mathematics (PCM) with Computer Science.",
-      degree: "HBSE(XII) - PCM with Computer Science",
-    },
-    {
-      id: 2,
-      img: avmLogo,
-      school: "Adarsh Vidya Mandir Senior Secondary School",
-      date: "Apr 2014 - March 2015",
-      grade: "88.4%",
-      desc: "I completed my class 10 education from Adarsh Vidya Mandir Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Science, Math with Computer.",
-      degree: "HBSE(X), Science, Math with Computer Application",
-    },
-  ];
+export const education = [
+  {
+    id: 0,
+    img: jmietiLogo,
+    school: "Jai Prakash Mukand Lal Innvoative Engineering & Technology Institue, Yamunanagar",
+    date: "Aug 2017 - July 2021",
+    grade: "70%",
+    desc: "I completed my Bachelor's degree in Computer Science (B.Tech.) from JMIETI, Yamunanagar (HR). Throughout my studies, I was immersed in a variety of subjects that deepened my understanding of computing and technology. From exploring Data Structures and Algorithms to diving into Web Development and Database Management Systems, I gained practical insights into the world of software development. My time at BSA College allowed me to work on projects that applied theoretical concepts to real-world problems.",
+    degree: "Bachelor of Technology - BTech (Computer Science)",
+  },
+  {
+    id: 1,
+    img: mlnLogo,
+    school: "Mukand Lal National Senior Secondary School",
+    date: "Apr 2015 - March 2017",
+    grade: "79%",
+    desc: "I completed my class 12 education from Mukand Lal National Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Physics, Chemistry, and Mathematics (PCM) with Computer Science.",
+    degree: "HBSE(XII) - PCM with Computer Science",
+  },
+  {
+    id: 2,
+    img: avmLogo,
+    school: "Adarsh Vidya Mandir Senior Secondary School",
+    date: "Apr 2014 - March 2015",
+    grade: "88.4%",
+    desc: "I completed my class 10 education from Adarsh Vidya Mandir Senior Secondary School, Yamunanagar, under the HBSE board, where I studied Science, Math with Computer.",
+    degree: "HBSE(X), Science, Math with Computer Application",
+  },
+];
