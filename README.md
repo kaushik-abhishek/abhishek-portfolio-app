@@ -214,7 +214,7 @@ This project is open-source and available for reference and inspiration.
 ---
 
 <p align="center">
-  <strong>Designed & Engineered by <a href="https://github.com/kaushik-abhishek">Abhishek Kaushik</a></strong>
+  <strong>Designed & Engineered by <a href="https://www.linkedin.com/in/kaushikxabhishek/">Abhishek Kaushik</a></strong>
   <br />
   <sub>Built with precision. Deployed with confidence.</sub>
 </p>
