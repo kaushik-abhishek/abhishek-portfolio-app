@@ -1,45 +1,45 @@
-import React, { useState, useEffect } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useEffect, useState } from 'react'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FiMenu, FiX } from 'react-icons/fi'
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
+  const [isScrolled, setIsScrolled] = useState(false)
 
   // Toggle navbar background on scroll
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Smooth scroll to section
   const handleMenuItemClick = (sectionId) => {
-    setActiveSection(sectionId);
-    setIsOpen(false);
-    const section = document.getElementById(sectionId);
+    setActiveSection(sectionId)
+    setIsOpen(false)
+    const section = document.getElementById(sectionId)
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+      section.scrollIntoView({ behavior: 'smooth' })
     }
-  };
+  }
 
   const menuItems = [
-    { id: "about", label: "About" },
-    { id: "skills", label: "Skills" },
-    { id: "experience", label: "Experience" },
-    { id: "work", label: "Projects" },
-    { id: "education", label: "Education" },
-  ];
+    { id: 'about', label: 'About' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'work', label: 'Projects' },
+    { id: 'education', label: 'Education' },
+  ]
 
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition duration-300 px-[7vw] md:px-[7vw] lg:px-[20vw] ${
         isScrolled
-          ? "bg-[#050414] bg-opacity-50 backdrop-blur-md shadow-md"
-          : "bg-transparent"
+          ? 'bg-[#050414] bg-opacity-50 backdrop-blur-md shadow-md'
+          : 'bg-transparent'
       }`}
     >
       <div className="text-white py-5 flex justify-between items-center">
@@ -58,7 +58,7 @@ const Navbar = () => {
             <li
               key={id}
               className={`cursor-pointer hover:text-[#8245ec] ${
-                activeSection === id ? "text-[#8245ec]" : ""
+                activeSection === id ? 'text-[#8245ec]' : ''
               }`}
             >
               <button onClick={() => handleMenuItemClick(id)}>{label}</button>
@@ -110,7 +110,7 @@ const Navbar = () => {
               <li
                 key={id}
                 className={`cursor-pointer hover:text-white ${
-                  activeSection === id ? "text-[#8245ec]" : ""
+                  activeSection === id ? 'text-[#8245ec]' : ''
                 }`}
               >
                 <button onClick={() => handleMenuItemClick(id)}>{label}</button>
@@ -138,7 +138,7 @@ const Navbar = () => {
         </div>
       )}
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -1,19 +1,20 @@
-import About from "./component/About/About";
-import BlurBlob from "./component/BlurBlob";
-import Chatbot from "./component/Chatbot/Chatbot";
-import Contact from "./component/Contact/Contact";
-import Education from "./component/Education/Education";
-import Experience from "./component/Experience/Experience";
-import Footer from "./component/Footer/Footer";
-import Navbar from "./component/Navbar/Navbar";
-import Skills from "./component/Skills/Skills";
+import About from './component/About/About'
+import BlurBlob from './component/BlurBlob'
+import Chatbot from './component/Chatbot/Chatbot'
+import Contact from './component/Contact/Contact'
+import Education from './component/Education/Education'
+import Experience from './component/Experience/Experience'
+import Footer from './component/Footer/Footer'
+import MultiLangPlayground from './component/MultiLangPlayground/MultiLangPlayground'
+import Navbar from './component/Navbar/Navbar'
+import Skills from './component/Skills/Skills'
 
 const App = () => {
   return (
     <div className="bg-[#050414]">
       <BlurBlob
-        position={{ top: "35%", left: "20%" }}
-        size={{ width: "30%", height: "40%" }}
+        position={{ top: '35%', left: '20%' }}
+        size={{ width: '30%', height: '40%' }}
       />
 
       {/* Background Grid */}
@@ -30,12 +31,16 @@ const App = () => {
         <Skills />
         <Experience />
         <Education />
+        {/* Projects anchor — referenced by Navbar 'Projects' link */}
+        <div id="work">
+          <MultiLangPlayground />
+        </div>
         <Contact />
         <Footer />
       </div>
       <Chatbot />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

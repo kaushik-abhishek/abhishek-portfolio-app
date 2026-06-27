@@ -1,41 +1,40 @@
-import React from "react";
-import { FaTwitter, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa'
 
 const Footer = () => {
   // Smooth scroll to section
   const handleScroll = (sectionId) => {
-    const section = document.getElementById(sectionId);
+    const section = document.getElementById(sectionId)
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+      section.scrollIntoView({ behavior: 'smooth' })
     }
-  };
+  }
 
   const navigationLinks = [
-    { name: "About", id: "about" },
-    { name: "Skills", id: "skills" },
-    { name: "Experience", id: "experience" },
-    { name: "Projects", id: "projects" },
-    { name: "Education", id: "education" },
-  ];
+    { name: 'About', id: 'about' },
+    { name: 'Skills', id: 'skills' },
+    { name: 'Experience', id: 'experience' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Education', id: 'education' },
+  ]
 
   const socialLinks = [
     {
       icon: <FaTwitter />,
-      link: "https://twitter.com/kaushikabhixhek",
+      link: 'https://twitter.com/kaushikabhixhek',
     },
     {
       icon: <FaLinkedin />,
-      link: "https://www.linkedin.com/in/kaushikxabhishek",
+      link: 'https://www.linkedin.com/in/kaushikxabhishek',
     },
     {
       icon: <FaInstagram />,
-      link: "https://www.instagram.com/kaushik.abhishek_/",
+      link: 'https://www.instagram.com/kaushik.abhishek_/',
     },
     {
       icon: <FaYoutube />,
-      link: "https://www.youtube.com/@kaushik.abhishek",
+      link: 'https://www.youtube.com/@kaushik.abhishek',
     },
-  ];
+  ]
 
   return (
     <footer className="text-white py-8 px-[12vw] md:px-[7vw] lg:px-[20vw]">
@@ -79,7 +78,7 @@ const Footer = () => {
         </p>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

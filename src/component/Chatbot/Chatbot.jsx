@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import {
   FiSend,
   FiX,
@@ -7,223 +7,243 @@ import {
   FiMaximize2,
 } from 'react-icons/fi'
 
+// ---------------------------------------------------------------------------
+// Static configuration (kept outside the component so they're not re-created
+// on every render).
+// ---------------------------------------------------------------------------
+
+const QUICK_ACTIONS = [
+  'What are your skills?',
+  'Tell me about your projects',
+  'How can I contact you?',
+  'What services do you offer?',
+]
+
+/**
+ * Pattern-matched response rules. Order matters — the first matching rule
+ * wins. Word-boundary regexes (\b) avoid false matches like "hire" → "hi",
+ * "framework" → "work", or "this" → "hi".
+ */
+const RESPONSE_RULES = [
+  {
+    test: /\b(who is abhishek|about abhishek)\b/i,
+    reply:
+      "Abhishek is a passionate full-stack developer with 4+ years of experience. He specializes in building scalable web applications using modern technologies like React, Node.js, and the MERN stack. He's also skilled in UI/UX design and mobile app development.",
+  },
+  {
+    test: /\b(skills|technologies|tech stack)\b/i,
+    reply:
+      "Abhishek's key skills include:\n• Frontend: React, JavaScript, TypeScript, HTML/CSS, Tailwind CSS\n• Backend: Node.js, Express.js, Python, Java\n• Databases: MongoDB, MySQL, PostgreSQL\n• Mobile: React Native\n• Tools: Git, Docker, AWS, Firebase\n• Design: UI/UX, Figma, Adobe Creative Suite",
+  },
+  {
+    test: /\b(projects|portfolio|work done)\b|tell me about your projects/i,
+    reply:
+      "Here are Abhishek's key projects:\n• Inbox\n• Dashboard\n• Yellowbook ICE\n• Dealer Management System\n• Portfolio\n• Food Bazar",
+  },
+  {
+    test: /\b(experience|career|work\w*)\b/i,
+    reply:
+      "Abhishek has 4+ years of professional experience in full-stack development. He has worked on various projects including web applications, mobile apps, and has experience with both frontend and backend development. He's passionate about creating seamless user experiences and efficient solutions.",
+  },
+  {
+    test: /\b(contact|reach|get in touch)\b/i,
+    reply:
+      'You can reach Abhishek through:\n• Email: Check the Contact section for his email\n• LinkedIn: https://www.linkedin.com/in/kaushikxabhishek\n• GitHub: https://github.com/kaushik-abhishek\n• You can also use the contact form on this website for direct communication.',
+  },
+  {
+    test: /\b(resume|cv|download)\b/i,
+    reply:
+      "You can download Abhishek's resume by clicking the 'Download CV' button in the About section. His resume contains detailed information about his experience, skills, and achievements.",
+  },
+  {
+    test: /\b(services|offer)\b|what can you do/i,
+    reply:
+      'Abhishek offers the following services:\n• Full-stack web development\n• Mobile app development (React Native)\n• UI/UX design\n• API development and integration\n• Database design and optimization\n• Website maintenance and support\n• Consultation and technical advice',
+  },
+  {
+    test: /\b(price|pricing|cost|rate|budget)\b/i,
+    reply:
+      'For pricing information and project quotes, please contact Abhishek directly through the contact form or email. He provides customized quotes based on project requirements, complexity, and timeline.',
+  },
+  {
+    test: /\b(available|availability|freelance|hire|hiring)\b/i,
+    reply:
+      "Abhishek is available for freelance projects and full-time opportunities. He's open to discussing new projects and collaborations. Feel free to reach out to discuss your requirements and availability.",
+  },
+  {
+    test: /\b(education|degree|university|college)\b/i,
+    reply:
+      "You can find detailed information about Abhishek's educational background in the Education section of this portfolio. He has a strong academic foundation combined with practical experience in software development.",
+  },
+  {
+    test: /\b(thank|thanks)\b/i,
+    reply:
+      "You're welcome! I'm here to help you learn more about Abhishek and his work. Feel free to ask any other questions you might have.",
+  },
+  {
+    test: /\b(help|assist)\b/i,
+    reply:
+      "I'm here to help! You can ask me about:\n• Abhishek's skills and experience\n• His projects and portfolio\n• Contact information\n• Services he offers\n• His background and education\n• Or any other questions about his work",
+  },
+  {
+    test: /\b(good|great|awesome|amazing)\b/i,
+    reply:
+      "Thank you! I'm glad I could help. Abhishek is indeed a talented developer with a passion for creating amazing digital experiences. Is there anything specific you'd like to know more about?",
+  },
+  {
+    test: /\b(time|when|timeline)\b/i,
+    reply:
+      "For project timelines and availability, I'd recommend reaching out to Abhishek directly through the contact form. He can provide specific timelines based on your project requirements.",
+  },
+  // Greetings go LAST so longer/more specific phrases match first
+  // (e.g. "hire" / "history" / "this" no longer collide with "hi").
+  {
+    test: /\b(hello|hi|hey|hola)\b/i,
+    reply:
+      "Hello! I'm Abhishek's AI assistant. I can help you learn more about his skills, experience, projects, or answer any questions about his work. What would you like to know?",
+  },
+]
+
+const FALLBACK_RESPONSES = [
+  "That's an interesting question! While I have information about Abhishek's work and experience, for specific details about that topic, I'd recommend reaching out to him directly through the contact form.",
+  "I understand you're asking about that. For the most accurate and detailed information, I'd suggest contacting Abhishek directly. He'd be happy to discuss your specific needs.",
+  "That's a great question! For detailed information about that topic, I'd recommend getting in touch with Abhishek directly. He can provide more specific insights based on your requirements.",
+  "I appreciate your question! For comprehensive information about that, I'd suggest reaching out to Abhishek through the contact section. He's always happy to discuss his work and answer questions.",
+]
+
+const getDynamicResponse = (userMessage) => {
+  const trimmed = userMessage.trim()
+  if (!trimmed) return FALLBACK_RESPONSES[0]
+
+  const matched = RESPONSE_RULES.find((rule) => rule.test.test(trimmed))
+  if (matched) return matched.reply
+
+  return FALLBACK_RESPONSES[
+    Math.floor(Math.random() * FALLBACK_RESPONSES.length)
+  ]
+}
+
+const createWelcomeMessage = () => ({
+  id: 1,
+  text: "Hi! I'm Abhishek's AI assistant. How can I help you today?",
+  sender: 'bot',
+  timestamp: new Date(),
+})
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hi! I'm Abhishek's AI assistant. How can I help you today?",
-      sender: 'bot',
-      timestamp: new Date(),
-    },
-  ])
+  const [messages, setMessages] = useState(() => [createWelcomeMessage()])
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const typingTimeoutRef = useRef(null)
+  const messageIdRef = useRef(2) // 1 is reserved for the welcome message
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const nextMessageId = () => {
+    const id = messageIdRef.current
+    messageIdRef.current += 1
+    return id
   }
 
+  // Auto-scroll to bottom when messages change
   useEffect(() => {
-    scrollToBottom()
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  // Focus input when the panel opens (and isn't minimized)
   useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus()
+    if (isOpen && !isMinimized) {
+      inputRef.current?.focus()
     }
-  }, [isOpen])
+  }, [isOpen, isMinimized])
 
-  const getDynamicResponse = (userMessage) => {
-    const message = userMessage.toLowerCase()
+  // Auto-resize textarea as the user types — driven by state so it stays in
+  // sync with controlled value changes (including programmatic clears).
+  useEffect(() => {
+    const el = inputRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`
+  }, [inputValue])
 
-    // Greeting responses
-    if (
-      message.includes('hello') ||
-      message.includes('hi') ||
-      message.includes('hey')
-    ) {
-      return "Hello! I'm Abhishek's AI assistant. I can help you learn more about his skills, experience, projects, or answer any questions about his work. What would you like to know?"
+  // Clear any pending typing simulation on unmount to avoid setting state
+  // on an unmounted component.
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current)
+        typingTimeoutRef.current = null
+      }
     }
+  }, [])
 
-    // About Abhishek
-    if (
-      message.includes('who is abhishek') ||
-      message.includes('about abhishek')
-    ) {
-      return "Abhishek is a passionate full-stack developer with 4+ years of experience. He specializes in building scalable web applications using modern technologies like React, Node.js, and the MERN stack. He's also skilled in UI/UX design and mobile app development."
-    }
+  /**
+   * Sends a message. Accepts an optional `overrideText` so callers (like
+   * quick-action buttons) can submit immediately without round-tripping
+   * through `inputValue` state (which would be stale at call time).
+   */
+  const handleSendMessage = useCallback(
+    (overrideText) => {
+      const text = (overrideText ?? inputValue).trim()
+      if (!text) return
 
-    // Skills and technologies
-    if (
-      message.includes('skills') ||
-      message.includes('technologies') ||
-      message.includes('tech stack')
-    ) {
-      return "Abhishek's key skills include:\n• Frontend: React, JavaScript, TypeScript, HTML/CSS, Tailwind CSS\n• Backend: Node.js, Express.js, Python, Java\n• Databases: MongoDB, MySQL, PostgreSQL\n• Mobile: React Native\n• Tools: Git, Docker, AWS, Firebase\n• Design: UI/UX, Figma, Adobe Creative Suite"
-    }
+      const userMessage = {
+        id: nextMessageId(),
+        text,
+        sender: 'user',
+        timestamp: new Date(),
+      }
 
-    // Experience
-    if (
-      message.includes('experience') ||
-      message.includes('work') ||
-      message.includes('career')
-    ) {
-      return "Abhishek has 4+ years of professional experience in full-stack development. He has worked on various projects including web applications, mobile apps, and has experience with both frontend and backend development. He's passionate about creating seamless user experiences and efficient solutions."
-    }
+      setMessages((prev) => [...prev, userMessage])
+      setInputValue('')
+      setIsTyping(true)
 
-    // Projects
-    if (
-      message.includes('projects') ||
-      message.includes('portfolio') ||
-      message.includes('work done') ||
-      message.includes('tell me about your projects')
-    ) {
-      return "Here are Abhishek's key projects:\n• Inbox\n• Dashboard\n• Yellowbook ICE\n• Dealer Management System\n• Portfolio\n• Food Bazar"
-    }
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current)
+      }
 
-    // Contact information
-    if (
-      message.includes('contact') ||
-      message.includes('reach') ||
-      message.includes('get in touch')
-    ) {
-      return 'You can reach Abhishek through:\n• Email: Check the Contact section for his email\n• LinkedIn: https://www.linkedin.com/in/kaushikxabhishek\n• GitHub: https://github.com/kaushik-abhishek\n• You can also use the contact form on this website for direct communication.'
-    }
+      typingTimeoutRef.current = setTimeout(
+        () => {
+          const botMessage = {
+            id: nextMessageId(),
+            text: getDynamicResponse(text),
+            sender: 'bot',
+            timestamp: new Date(),
+          }
+          setMessages((prev) => [...prev, botMessage])
+          setIsTyping(false)
+          typingTimeoutRef.current = null
+        },
+        1000 + Math.random() * 1500,
+      )
+    },
+    [inputValue],
+  )
 
-    // Resume/CV
-    if (
-      message.includes('resume') ||
-      message.includes('cv') ||
-      message.includes('download')
-    ) {
-      return "You can download Abhishek's resume by clicking the 'Download CV' button in the About section. His resume contains detailed information about his experience, skills, and achievements."
-    }
-
-    // Services
-    if (
-      message.includes('services') ||
-      message.includes('what can you do') ||
-      message.includes('offer')
-    ) {
-      return 'Abhishek offers the following services:\n• Full-stack web development\n• Mobile app development (React Native)\n• UI/UX design\n• API development and integration\n• Database design and optimization\n• Website maintenance and support\n• Consultation and technical advice'
-    }
-
-    // Pricing
-    if (
-      message.includes('price') ||
-      message.includes('cost') ||
-      message.includes('rate') ||
-      message.includes('budget')
-    ) {
-      return 'For pricing information and project quotes, please contact Abhishek directly through the contact form or email. He provides customized quotes based on project requirements, complexity, and timeline.'
-    }
-
-    // Availability
-    if (
-      message.includes('available') ||
-      message.includes('freelance') ||
-      message.includes('hire')
-    ) {
-      return "Abhishek is available for freelance projects and full-time opportunities. He's open to discussing new projects and collaborations. Feel free to reach out to discuss your requirements and availability."
-    }
-
-    // Education
-    if (
-      message.includes('education') ||
-      message.includes('degree') ||
-      message.includes('university')
-    ) {
-      return "You can find detailed information about Abhishek's educational background in the Education section of this portfolio. He has a strong academic foundation combined with practical experience in software development."
-    }
-
-    // Thank you responses
-    if (message.includes('thank') || message.includes('thanks')) {
-      return "You're welcome! I'm here to help you learn more about Abhishek and his work. Feel free to ask any other questions you might have."
-    }
-
-    // Default responses based on keywords
-    if (message.includes('help') || message.includes('assist')) {
-      return "I'm here to help! You can ask me about:\n• Abhishek's skills and experience\n• His projects and portfolio\n• Contact information\n• Services he offers\n• His background and education\n• Or any other questions about his work"
-    }
-
-    if (
-      message.includes('good') ||
-      message.includes('great') ||
-      message.includes('awesome')
-    ) {
-      return "Thank you! I'm glad I could help. Abhishek is indeed a talented developer with a passion for creating amazing digital experiences. Is there anything specific you'd like to know more about?"
-    }
-
-    if (message.includes('time') || message.includes('when')) {
-      return "For project timelines and availability, I'd recommend reaching out to Abhishek directly through the contact form. He can provide specific timelines based on your project requirements."
-    }
-
-    // Fallback responses for unrecognized queries
-    const fallbackResponses = [
-      "That's an interesting question! While I have information about Abhishek's work and experience, for specific details about that topic, I'd recommend reaching out to him directly through the contact form.",
-      "I understand you're asking about that. For the most accurate and detailed information, I'd suggest contacting Abhishek directly. He'd be happy to discuss your specific needs.",
-      "That's a great question! For detailed information about that topic, I'd recommend getting in touch with Abhishek directly. He can provide more specific insights based on your requirements.",
-      "I appreciate your question! For comprehensive information about that, I'd suggest reaching out to Abhishek through the contact section. He's always happy to discuss his work and answer questions.",
-    ]
-
-    return fallbackResponses[
-      Math.floor(Math.random() * fallbackResponses.length)
-    ]
-  }
-
-  const handleSendMessage = async () => {
-    if (!inputValue.trim()) return
-
-    const userMessage = {
-      id: Date.now(),
-      text: inputValue,
-      sender: 'user',
-      timestamp: new Date(),
-    }
-
-    setMessages((prev) => [...prev, userMessage])
-    setInputValue('')
-    setIsTyping(true)
-
-    // Get dynamic response based on user input
-    setTimeout(
-      () => {
-        const botResponse = getDynamicResponse(inputValue)
-
-        const botMessage = {
-          id: Date.now() + 1,
-          text: botResponse,
-          sender: 'bot',
-          timestamp: new Date(),
-        }
-
-        setMessages((prev) => [...prev, botMessage])
-        setIsTyping(false)
-      },
-      1000 + Math.random() * 1500,
-    )
-  }
-
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSendMessage()
     }
   }
 
-  const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }
+  const formatTime = (date) =>
+    date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
   return (
     <>
       {!isOpen && (
         <button
+          type="button"
           onClick={() => setIsOpen(true)}
+          aria-label="Open chat assistant"
           className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 z-50 flex items-center justify-center"
         >
           <FiMessageCircle size={24} />
@@ -232,6 +252,8 @@ const Chatbot = () => {
 
       {isOpen && (
         <div
+          role="dialog"
+          aria-label="Chat assistant"
           className={`fixed z-50 transition-all duration-300 ${
             isMinimized
               ? 'bottom-6 right-6 w-80 h-16'
@@ -253,7 +275,9 @@ const Chatbot = () => {
               </div>
               <div className="flex items-center space-x-1">
                 <button
-                  onClick={() => setIsMinimized(!isMinimized)}
+                  type="button"
+                  onClick={() => setIsMinimized((v) => !v)}
+                  aria-label={isMinimized ? 'Expand chat' : 'Minimize chat'}
                   className="p-2 hover:bg-white/20 rounded-full transition-colors duration-200"
                 >
                   {isMinimized ? (
@@ -263,7 +287,9 @@ const Chatbot = () => {
                   )}
                 </button>
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
+                  aria-label="Close chat"
                   className="p-2 hover:bg-white/20 rounded-full transition-colors duration-200"
                 >
                   <FiX size={16} />
@@ -274,7 +300,7 @@ const Chatbot = () => {
             {!isMinimized && (
               <>
                 <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-900">
-                  {messages.map((message) => (
+                  {messages.map((message, index) => (
                     <div key={message.id}>
                       <div
                         className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -301,20 +327,13 @@ const Chatbot = () => {
                         </div>
                       </div>
 
-                      {message.id === 1 && message.sender === 'bot' && (
+                      {index === 0 && message.sender === 'bot' && (
                         <div className="flex flex-wrap gap-2 mt-2 justify-start">
-                          {[
-                            'What are your skills?',
-                            'Tell me about your projects',
-                            'How can I contact you?',
-                            'What services do you offer?',
-                          ].map((quickAction, index) => (
+                          {QUICK_ACTIONS.map((quickAction) => (
                             <button
-                              key={index}
-                              onClick={() => {
-                                setInputValue(quickAction)
-                                setTimeout(() => handleSendMessage(), 100)
-                              }}
+                              type="button"
+                              key={quickAction}
+                              onClick={() => handleSendMessage(quickAction)}
                               className="px-3 py-2 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200 shadow-sm hover:shadow-md"
                             >
                               {quickAction}
@@ -326,18 +345,22 @@ const Chatbot = () => {
                   ))}
 
                   {isTyping && (
-                    <div className="flex justify-start">
+                    <div
+                      className="flex justify-start"
+                      aria-live="polite"
+                      aria-label="Assistant is typing"
+                    >
                       <div className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-2xl p-3 shadow-sm">
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
                           <div
                             className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
                             style={{ animationDelay: '0.1s' }}
-                          ></div>
+                          />
                           <div
                             className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
                             style={{ animationDelay: '0.2s' }}
-                          ></div>
+                          />
                         </div>
                       </div>
                     </div>
@@ -352,23 +375,19 @@ const Chatbot = () => {
                         ref={inputRef}
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyDown}
                         placeholder="Type your message..."
+                        aria-label="Type your message"
+                        rows={1}
                         className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400"
-                        rows="1"
-                        style={{
-                          minHeight: '44px',
-                          maxHeight: '120px',
-                        }}
-                        onInput={(e) => {
-                          e.target.style.height = 'auto'
-                          e.target.style.height = e.target.scrollHeight + 'px'
-                        }}
+                        style={{ minHeight: '44px', maxHeight: '120px' }}
                       />
                     </div>
                     <button
-                      onClick={handleSendMessage}
+                      type="button"
+                      onClick={() => handleSendMessage()}
                       disabled={!inputValue.trim()}
+                      aria-label="Send message"
                       className="flex-shrink-0 w-11 h-11 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow-md"
                     >
                       <FiSend size={18} />

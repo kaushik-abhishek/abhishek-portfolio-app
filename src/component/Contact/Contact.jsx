@@ -1,50 +1,48 @@
-import React, { useRef, useState } from "react";
-import emailjs from "@emailjs/browser";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import emailjs from '@emailjs/browser'
+import { useRef } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Contact = () => {
-  const form = useRef();
-  const [isSent, setIsSent] = useState(false);
+  const form = useRef()
 
   const sendEmail = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     emailjs
       .sendForm(
-        "service_ecpdoqp",
-        "template_kr6c6kw",
+        'service_ecpdoqp',
+        'template_kr6c6kw',
         form.current,
-        "_icW4CFlaFk_Ag5EE"
+        '_icW4CFlaFk_Ag5EE',
       )
       .then(
         () => {
-          setIsSent(true);
-          form.current.reset();
-          toast.success("Message sent successfully! ✅", {
-            position: "top-right",
+          form.current.reset()
+          toast.success('Message sent successfully! ✅', {
+            position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            theme: "dark",
-          });
+            theme: 'dark',
+          })
         },
         (error) => {
-          console.error("Error sending message:", error);
-          toast.error("Failed to send message. Please try again.", {
-            position: "top-right",
+          console.error('Error sending message:', error)
+          toast.error('Failed to send message. Please try again.', {
+            position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            theme: "dark",
-          });
-        }
-      );
-  };
+            theme: 'dark',
+          })
+        },
+      )
+  }
 
   return (
     <section
@@ -59,7 +57,8 @@ const Contact = () => {
         <h2 className="text-4xl font-bold text-white">CONTACT</h2>
         <div className="w-32 h-1 bg-purple-500 mx-auto mt-4"></div>
         <p className="text-gray-400 mt-4 text-lg font-semibold">
-          I'd love to hear from you—reach out for any opportunities or questions!
+          I would love to hear from you—reach out for any opportunities or
+          questions!
         </p>
       </div>
 
@@ -113,7 +112,7 @@ const Contact = () => {
         </form>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact
